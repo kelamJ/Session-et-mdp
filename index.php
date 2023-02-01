@@ -1,10 +1,20 @@
 <?php
     //On démarre une nouvelle session
-    session_start();
+    // session_start();
     
-    //On définit des variables de session
-    $_SESSION['prenom'] = 'Julien';
-    $_SESSION['age'] = 22;
+    // // On définit des variables de session
+    // $_SESSION['prenom'] = 'Julien';
+    // $_SESSION['age'] = 22;
+
+    // unset($_SESSION["prenom"]);
+    // unset($_SESSION["age"]);
+
+    if (ini_get("session.use_cookies")) 
+    {
+        setcookie(session_name(), '', time()-42000);
+    }
+
+    session_destroy();
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,21 +26,7 @@
     
     <body>
         <h1>Titre principal</h1>
-        <?php
-            /*Si la variable de session age est définie, on echo sa valeur
-             *puis on la détruit avec unset()*/
-            if(isset($_SESSION['age'])){
-                echo 'Tu as ' .$_SESSION['age']. ' ans<br>';
-                // unset($_SESSION['age']);
-            }
-            
-            /*On détruit les données de session*/
-            session_destroy();
-            
-            //On tente d'afficher les valeurs des variables age et prenom 
-            echo 'Contenu de $_SESSION[\'age\'] : ' .$_SESSION['age']. '<br>';
-            echo 'Contenu de $_SESSION[\'prenom\'] : ' .$_SESSION['prenom'];
-        ?>
+        
         <p>Un paragraphe</p>
     </body>
 </html>
