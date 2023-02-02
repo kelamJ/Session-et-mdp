@@ -1,46 +1,23 @@
 <?php
 session_start();
-
-if (isset($_POST['login']) && isset($_POST['password'])) {
-    include "db.php";
-
-    $db = connexionBase();
+@$mail=$_POST["mail"];
+@$pass=md5($_POST["pass"]);
+@$valider=$_POST["valider"];
+$erreur="";
+if(isset($valider)){
+    include("connexion.php");
+   $sel=$pdo->prepare("SELECT * from user WHERE mail=? and pass=? limit 1");
+    $sel->execute(array($mail,$pass));
+    $tab=$sel->fetchAll();
+    if(count($tab)>0){
+        $_SESSION["prenomNom"]=ucfirst(strtolower($tab[0]["prenom"])).
+        " ".strtoupper($tab[0]["nom"]);
+        $_SESSION["autoriser"]="oui";
+        header("location:session.php");
+    }
+    else
+        $erreur="Mauvais login ou mot de passe!";
 }
-
-$requete = $db->query("SELECT user_nom, user_password FROM user");
-
-$errorMessage = '';
-// Test de l'envoi du formulaire
-if(!empty($_POST)) 
-{
-  // Les identifiants sont transmis ?
-        if(!empty($_POST['login']) && !empty($_POST['password'])) 
-        {
-        // Sont-ils les mêmes que les constantes ?
-        if($_POST['login'] !== $requete) 
-        {
-            $errorMessage = 'Mauvais login !';
-        }
-            elseif($_POST['password'] !== $requete) 
-        {  
-            $errorMessage = 'Mauvais mot de passe !';
-        }
-            else
-        {
-        // On ouvre la session
-            session_start();
-        // On enregistre le login en session
-            $_SESSION['login'] = $requete;
-        // On redirige vers le fichier admin.php
-            header('Location: login_script.php');
-            exit();
-        }
-    }
-        else
-    {
-        $errorMessage = 'Veuillez inscrire vos identifiants svp !';
-    }
-    }
 ?>
 
 <html lang="en">
@@ -51,31 +28,25 @@ if(!empty($_POST))
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Login</title>
 </head>
-<body>
+<body onLoad="document.fo.login.focus()">
+
+<h1 class="fw-bold">Connexion</h1>
 
 <div class="container-fluid align-items-center">
-    <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
+    <form action="" name="fo" method="post">
 
-    <?php
-          // Rencontre-t-on une erreur ?
-        if(!empty($errorMessage)) 
-        {
-            echo '<p>', htmlspecialchars($errorMessage) ,'</p>';
-        }
-        ?>
-
-    <label class="text-success" for="login">Login :</label>
-    <input class="form-control col-3" id="login" name="login" type="text" placeholder="Login">
+    <label class="text-success" for="mail">Mail :</label>
+    <input class="form-control col-3" id="mail" name="mail" type="text" placeholder="Mail">
 
     <br>
 
 
-    <label class="text-success" for="password">Mot de passe :</label>
-    <input class="form-control col-3" name="password" id="password" type="password" placeholder="Mot de passe">
+    <label class="text-success" for="pass">Mot de passe :</label>
+    <input class="form-control col-3" name="pass" id="pass" type="password" placeholder="Mot de passe">
 
     <br>
 
-    <input class="btn btn-success" name="submit" type="submit" placeholder="Envoyer"">
+    <input class="btn btn-success" name="valider" type="submit" placeholder="S'authentifier"">
 
     <button class="btn">
         <a class="btn btn-danger" href="exo_mdp.php">S'inscrire</a>

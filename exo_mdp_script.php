@@ -1,12 +1,12 @@
 <?php
  // Récupération du login et du password :
-$login = (isset($_POST['login']) && $_POST['login'] != "") ? $_POST['login'] : Null;
+$nom = (isset($_POST['nom']) && $_POST['nom'] != "") ? $_POST['nom'] : Null;
 $prenom = (isset($_POST['prenom']) && $_POST['prenom'] != "") ? $_POST['prenom'] : Null;
 $mail = (isset($_POST['mail']) && $_POST['mail'] != "") ? $_POST['mail'] : Null;
-$password = (isset($_POST['password']) && $_POST['password'] != "") ? $_POST['password'] : Null;
+$pass = (isset($_POST['pass']) && $_POST['pass'] != "") ? $_POST['pass'] : Null;
 
 // En cas d'erreur, on renvoie vers le formulaire
-if ($login == Null || $prenom == Null || $mail == Null || $password == Null){
+if ($login == Null || $prenom == Null || $mail == Null || $pass == Null){
     header("Location: exo_mdp.php");
     exit;
 }
@@ -19,10 +19,10 @@ try {
     // Construction de la requête
     $requete = $db->prepare("INSERT INTO user (user_nom, user_prenom, user_mail, user_password) VALUES (:login, :prenom, :mail, :password);");
 
-    $requete->bindValue(":login", $login, PDO::PARAM_STR);
+    $requete->bindValue(":nom", $login, PDO::PARAM_STR);
     $requete->bindValue(":prenom", $prenom, PDO::PARAM_STR);
     $requete->bindValue(":mail", $mail, PDO::PARAM_STR);
-    $requete->bindValue(":password", $password, PDO::PARAM_STR);
+    $requete->bindValue(":pass", $password, PDO::PARAM_STR);
 
     //Lancement de la requête :
     $requete->execute();
