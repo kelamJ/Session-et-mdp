@@ -1,33 +1,33 @@
 <?php
-session_start();
-@$nom=$_POST["nom"];
-@$prenom=$_POST["prenom"];
-@$mail=$_POST["mail"];
-@$pass=$_POST["pass"];
-@$repass=$_POST["repass"];
-@$valider=$_POST["valider"];
-$erreur="";
-if(isset($valider)){
-    if(empty($nom)) $erreur="Nom laissé vide!";
-    elseif(empty($prenom)) $erreur="Prénom laissé vide!";
-    elseif(empty($prenom)) $erreur="Prénom laissé vide!";
-    elseif(empty($mail)) $erreur="Mail laissé vide!";
-    elseif(empty($pass)) $erreur="Mot de passe laissé vide!";
-    elseif($pass!=$repass) $erreur="Mots de passe non identiques!";
-    else{
-        include("connexion.php");
-        $sel=$pdo->prepare("SELECT id FROM user WHERE mail=? limit 1");
-        $sel->execute(array($mail));
-        $tab=$sel->fetchAll();
-        if(count($tab)>0)
-            $erreur="Login existe déjà!";
+    session_start();
+    @$nom=$_POST["nom"];
+    @$prenom=$_POST["prenom"];
+    @$mail=$_POST["mail"];
+    @$pass=$_POST["pass"];
+    @$repass=$_POST["repass"];
+    @$valider=$_POST["valider"];
+    $erreur="";
+    if(isset($valider)){
+        if(empty($nom)) $erreur="Nom laissé vide!";
+        elseif(empty($prenom)) $erreur="Prénom laissé vide!";
+        elseif(empty($prenom)) $erreur="Prénom laissé vide!";
+        elseif(empty($mail)) $erreur="Mail laissé vide!";
+        elseif(empty($pass)) $erreur="Mot de passe laissé vide!";
+        elseif($pass!=$repass) $erreur="Mots de passe non identiques!";
         else{
-            $ins=$pdo->prepare("INSERT INTO user(nom,prenom,mail,pass) values(?,?,?,?)");
-        if($ins->execute(array($nom,$prenom,$mail,md5($pass))))
-            header("location:login_form.php");
-        }   
+            include("connexion.php");
+            $sel=$pdo->prepare("SELECT id FROM user WHERE mail=? limit 1");
+            $sel->execute(array($mail));
+            $tab=$sel->fetchAll();
+            if(count($tab)>0)
+                $erreur="Login existe déjà!";
+            else{
+                $ins=$pdo->prepare("INSERT INTO user(nom,prenom,mail,pass) values(?,?,?,?)");
+            if($ins->execute(array($nom,$prenom,$mail,md5($pass))))
+                header("location:login_form.php");
+            }   
+        }
     }
-}
 ?>
 
 <html lang="fr">
@@ -67,12 +67,12 @@ if(isset($valider)){
             <input class="form-control col-2" type="password" name="repass" placeholder="Confirmer Mot de passe" />
             <br>
 
-            <input class="btn btn-danger" name="valider" type="submit" placeholder="Envoyer"">
+        <input class="btn btn-danger" name="valider" type="submit" placeholder="Envoyer"">
 
-            <button class="btn">
-                <a class="btn btn-success" href="login_form.php">Retour</a>
-            </button>
-        </form>
+        <button class="btn">
+            <a class="btn btn-success" href="login_form.php">Retour</a>
+        </button>
+    </form>
 </div>
 </body>
 </html>

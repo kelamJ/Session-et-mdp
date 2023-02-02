@@ -4,14 +4,14 @@
         header("location:login_form.php");
         exit();
     }
-        if(date("H")<18)
+        if(date("H")<18) 
         $bienvenue="Bonjour et bienvenue ".
         $_SESSION["prenomNom"].
-        " dans votre espace personnel";
+        " dans votre espace personnel vos login / mot de passe sont valides";
         else
         $bienvenue="Bonsoir et bienvenue ".
         $_SESSION["prenomNom"].
-        " dans votre espace personnel";
+        " dans votre espace personnel vos login / mot de passe sont valides";
 ?>
 <!DOCTYPE html>
 <html>

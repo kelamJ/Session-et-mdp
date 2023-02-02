@@ -1,6 +1,7 @@
 <?php
 session_start();
 @$mail=$_POST["mail"];
+// Fonction md5 qui hash le mot de passe pour le mettre en base de donnée sécurisé
 @$pass=md5($_POST["pass"]);
 @$valider=$_POST["valider"];
 $erreur="";
