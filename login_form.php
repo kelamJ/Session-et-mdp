@@ -1,13 +1,16 @@
 <?php
+// On démarre une session sur chaque page ou on utitlise session_star().
 session_start();
+// On récupère les valeurs
 @$mail=$_POST["mail"];
-// Fonction md5 qui hash le mot de passe pour le mettre en base de donnée sécurisé
+    // Fonction md5 qui hash le mot de passe pour le mettre en base de donnée sécurisé
 @$pass=md5($_POST["pass"]);
 @$valider=$_POST["valider"];
 $erreur="";
 if(isset($valider)){
     include("connexion.php");
-   $sel=$pdo->prepare("SELECT * from user WHERE mail=? and pass=? limit 1");
+     // Construction de la requête SELECT sans injection SQL :
+    $sel=$pdo->prepare("SELECT * from user WHERE mail=? and pass=? limit 1");
     $sel->execute(array($mail,$pass));
     $tab=$sel->fetchAll();
     if(count($tab)>0){

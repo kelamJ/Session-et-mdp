@@ -10,7 +10,7 @@
     if(isset($valider)){
         if(empty($nom)) $erreur="Nom laissé vide!";
         elseif(empty($prenom)) $erreur="Prénom laissé vide!";
-        elseif(empty($prenom)) $erreur="Prénom laissé vide!";
+        elseif(empty($nom)) $erreur="Prénom laissé vide!";
         elseif(empty($mail)) $erreur="Mail laissé vide!";
         elseif(empty($pass)) $erreur="Mot de passe laissé vide!";
         elseif($pass!=$repass) $erreur="Mots de passe non identiques!";
